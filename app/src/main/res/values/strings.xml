@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Baking App</string>
+    <string name="steps_activity_name">Steps</string>
+    <string name="instructions_activity_name">Instructions</string>
+    <string name="loading_title">Please Wait...</string>
+    <string name="loading_message">Connecting to server....</string>
+    <string name="connection_error">Connection Error</string>
+    <string name="ingredients">%1$d.\t\t%2$.1f %3$s of %4$s</string>
+    <string name="steps">%1$s</string>
+    <string name="steps_with_index">%1$d.\t\t%2$s</string>
+    <string name="servings">Servings: %1$d</string>
+
+    <string name="ingredients_title">Ingredients List</string>
+    <string name="steps_title">Steps List</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+
+    <string name="empty_view_message">No ingredients found</string>
+    <string name="favorite_recipe">Add me to favorite</string>
+    <string name="widget_title">Select a favorite recipe</string>
+
+</resources>
