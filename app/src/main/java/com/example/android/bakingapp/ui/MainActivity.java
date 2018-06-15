@@ -82,12 +82,18 @@ public class MainActivity extends AppCompatActivity implements ListAdapter.ItemO
         apiRequest.get(new ApiRequest.Callback() {
             @Override
             public void onSuccess(String result) {
+                RecipesData.setJsonResponse(getApplicationContext(),result);
                 Gson gson = new Gson();
                 RecipesData[] data = gson.fromJson(result, RecipesData[].class);
 
                 clear();
                 for(int i = 0; i < data.length; i++){
                     mItems.add(data[i]);
+//                    RecipesData.Ingredients[] ingredients = data[i].getIngredients();
+//
+//                    for(int j = 0; j < ingredients.length; j++){
+//                        Timber.d(ingredients[j].getIngredient());
+//                    }
                 }
             }
         }, true);
@@ -104,11 +110,18 @@ public class MainActivity extends AppCompatActivity implements ListAdapter.ItemO
     public void onClick(int position) {
         RecipesData current = (RecipesData) mItems.get(position);
         //this open the StepsActivity
+        Bundle extras = new Bundle();
+        extras.putSerializable(RecipesData.EXTRA_STEPS, current.getSteps());
+        extras.putSerializable(RecipesData.EXTRA_INGREDIENTS, current.getIngredients());
+        extras.putString(RecipesData.EXTRA_RECIPE_NAME, current.getName());
+        extras.putInt(RecipesData.EXTRA_RECIPE_POSITION, position);
+
         Intent intent = new Intent(this, StepsActivity.class);
-        intent.putExtra(RecipesData.EXTRA_STEPS, current.getSteps());
-        intent.putExtra(RecipesData.EXTRA_INGREDIENTS, current.getIngredients());
-        intent.putExtra(RecipesData.EXTRA_RECIPE_NAME, current.getName());
-        intent.putExtra(RecipesData.EXTRA_RECIPE_POSITION, position);
+        intent.putExtras(extras);
+//        intent.putExtra(RecipesData.EXTRA_STEPS, current.getSteps());
+//        intent.putExtra(RecipesData.EXTRA_INGREDIENTS, current.getIngredients());
+//        intent.putExtra(RecipesData.EXTRA_RECIPE_NAME, current.getName());
+//        intent.putExtra(RecipesData.EXTRA_RECIPE_POSITION, position);
 
         if (intent.resolveActivity(this.getPackageManager()) != null) {
             this.startActivity(intent);

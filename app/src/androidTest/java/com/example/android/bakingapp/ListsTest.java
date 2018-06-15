@@ -82,7 +82,7 @@ public class ListsTest {
             onView(withId(R.id.instruction_fragment)).check(matches(isDisplayed()));
             onView(withId(R.id.instructions)).check(matches(withText(startsWith("2. Whisk"))));
         }else{
-            intended(allOf(hasExtraWithKey(RecipesData.EXTRA_STEPS_LIST), hasExtra(RecipesData.EXTRA_POSITION, 2)));
+            intended(allOf(hasExtraWithKey(RecipesData.EXTRA_STEPS_LIST), hasExtra(RecipesData.EXTRA_STEPS_POSITION, 2)));
             onView(allOf(withId(R.id.instructions), isDisplayed())).check(matches(withText(startsWith("2. Whisk"))));
         }
 

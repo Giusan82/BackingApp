@@ -34,8 +34,10 @@ public class RecipesData implements Serializable{
     public static final String EXTRA_STEPS_POSITION = "extra_steps_position";
     public static final String EXTRA_RECIPE_NAME = "extra_recipe_name";
 
-    public static final String PREF_KEY_RECIPE_POSITION = "pref_key_recipe_position";
-    public static final String PREF_KEY_RECIPE_NAME = "pref_key_recipe_name";
+    private static final String PREF_KEY_RECIPE_POSITION = "pref_key_recipe_position";
+    private static final String PREF_KEY_RECIPE_NAME = "pref_key_recipe_name";
+    private static final String PREF_KEY_JSON_RESPONSE = "pref_key_json_response";
+    public static final int PREF_KEY_DEFAULT_POSITION = -1;
 
 
     @SerializedName(KEY_ID)
@@ -102,6 +104,11 @@ public class RecipesData implements Serializable{
         editor.putInt(PREF_KEY_RECIPE_POSITION, position);
         editor.apply();
     }
+    public static int getPosition(Context context) {
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+        int position = sharedPrefs.getInt(PREF_KEY_RECIPE_POSITION, PREF_KEY_DEFAULT_POSITION);
+        return position;
+    }
 
     public static void setRecipeName(Context context, String name) {
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -110,15 +117,22 @@ public class RecipesData implements Serializable{
         editor.apply();
     }
 
-    public static int getPosition(Context context) {
-        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
-        int position = sharedPrefs.getInt(PREF_KEY_RECIPE_POSITION, 0);
-        return position;
-    }
-
     public static String getRecipeName(Context context) {
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         String name = sharedPrefs.getString(PREF_KEY_RECIPE_NAME, "");
         return name;
+    }
+
+    public static void setJsonResponse(Context context, String jsonResponse) {
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = sharedPrefs.edit();
+        editor.putString(PREF_KEY_JSON_RESPONSE, jsonResponse);
+        editor.apply();
+    }
+
+    public static String getJsonResponse(Context context) {
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
+        String jsonResponse = sharedPrefs.getString(PREF_KEY_JSON_RESPONSE, "");
+        return jsonResponse;
     }
 }

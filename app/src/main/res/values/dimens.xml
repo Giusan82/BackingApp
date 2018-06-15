@@ -15,8 +15,8 @@
     <dimen name="footer">45dp</dimen>
     <dimen name="buttons_size">48dp</dimen>
 
-    <dimen name="widget_text_list_size">8sp</dimen>
-    <dimen name="widget_text_title_size">15sp</dimen>
+    <dimen name="widget_text_list_size">11sp</dimen>
+    <dimen name="widget_text_title_size">17sp</dimen>
 
     <!--
 Refer to App Widget Documentation for margin information

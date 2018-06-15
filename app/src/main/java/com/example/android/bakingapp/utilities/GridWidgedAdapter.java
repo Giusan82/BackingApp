@@ -24,7 +24,7 @@ public class GridWidgedAdapter implements RemoteViewsService.RemoteViewsFactory{
     private RecipesData[] mRecipes;
     private RecipesData.Steps[] mSteps;
     private RecipesData.Ingredients[] mIngredients;
-    private int mPosition = 0;
+    private int mPosition;
 
 
 
@@ -43,29 +43,25 @@ public class GridWidgedAdapter implements RemoteViewsService.RemoteViewsFactory{
 
     private void fetchingData(){
         mPosition = RecipesData.getPosition(mContext);
-        ApiRequest apiRequest = new ApiRequest(mContext);
-        apiRequest.get(new ApiRequest.Callback() {
-            @Override
-            public void onSuccess(String result) {
-                Gson gson = new Gson();
-                mRecipes = gson.fromJson(result, RecipesData[].class);
-                mSteps = mRecipes[mPosition].getSteps();
-                mIngredients = mRecipes[mPosition].getIngredients();
 
-                clear();
+        if(mPosition != RecipesData.PREF_KEY_DEFAULT_POSITION){
+            String result = RecipesData.getJsonResponse(mContext);
+            Gson gson = new Gson();
+            mRecipes = gson.fromJson(result, RecipesData[].class);
+            mSteps = mRecipes[mPosition].getSteps();
+            mIngredients = mRecipes[mPosition].getIngredients();
+
+            clear();
 //                for(int i = 0; i < data.length; i++){
 //                    mItems.add(data[i]);
 //
 //                }
 
-
-
-                for(int i = 0; i < mIngredients.length; i++){
-                    mItems.add(mIngredients[i]);
-                }
-
+            for(int i = 0; i < mIngredients.length; i++){
+                mItems.add(mIngredients[i]);
             }
-        }, false);
+        }
+
     }
 
     private void clear() {
@@ -86,16 +82,21 @@ public class GridWidgedAdapter implements RemoteViewsService.RemoteViewsFactory{
 
     @Override
     public RemoteViews getViewAt(int position) {
-        RecipesData.Ingredients current = (RecipesData.Ingredients) mItems.get(position);
-        Log.d("getViewAt", current.getIngredient());
-        RemoteViews views = new RemoteViews(mContext.getPackageName(), R.layout.widget_list_layout);
-        views.setTextViewText(R.id.tw_list_recipe_name, mContext.getString(R.string.ingredients, position+1, current.getQuantity(), current.getMeasure(), current.getIngredient()));
-        Intent openSteps = new Intent();
-        openSteps.putExtra(RecipesData.EXTRA_STEPS, mSteps);
-        openSteps.putExtra(RecipesData.EXTRA_INGREDIENTS, mIngredients);
-        openSteps.putExtra(RecipesData.EXTRA_RECIPE_NAME, mRecipes[mPosition].getName());
-        views.setOnClickFillInIntent(R.id.tw_list_recipe_name, openSteps);
-        return views;
+        if(position < mIngredients.length){
+            RecipesData.Ingredients current = (RecipesData.Ingredients) mItems.get(position);
+            Log.d("getViewAt", current.getIngredient());
+            RemoteViews views = new RemoteViews(mContext.getPackageName(), R.layout.widget_list_layout);
+            views.setTextViewText(R.id.tw_list_recipe_name, mContext.getString(R.string.ingredients, position+1, current.getQuantity(), current.getMeasure(), current.getIngredient()));
+            Intent openSteps = new Intent();
+            openSteps.putExtra(RecipesData.EXTRA_STEPS, mSteps);
+            openSteps.putExtra(RecipesData.EXTRA_INGREDIENTS, mIngredients);
+            openSteps.putExtra(RecipesData.EXTRA_RECIPE_NAME, mRecipes[mPosition].getName());
+            views.setOnClickFillInIntent(R.id.tw_list_recipe_name, openSteps);
+            return views;
+        }else{
+            return null;
+        }
+
     }
 
     @Override
@@ -109,8 +110,8 @@ public class GridWidgedAdapter implements RemoteViewsService.RemoteViewsFactory{
     }
 
     @Override
-    public long getItemId(int i) {
-        return i;
+    public long getItemId(int id) {
+        return id;
     }
 
     @Override

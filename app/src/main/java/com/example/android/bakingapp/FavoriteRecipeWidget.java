@@ -25,15 +25,21 @@ public class FavoriteRecipeWidget extends AppWidgetProvider {
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
 
-        String recipe_name = recipe_name = RecipesData.getRecipeName(context);
+        String recipe_name;
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.favorite_recipe_widget);
+
+        if(RecipesData.getRecipeName(context).equals("")){
+            recipe_name = context.getString(R.string.widget_title);
+            //open the app when the widget is clicked on the name
+            Intent openActivity = new Intent(context, MainActivity.class);
+            PendingIntent pendingIntent =  PendingIntent.getActivity(context, 0, openActivity, 0);
+            views.setOnClickPendingIntent(R.id.widget_container, pendingIntent);
+        }else{
+           recipe_name = RecipesData.getRecipeName(context);
+        }
         views.setTextViewText(R.id.recipe_name, recipe_name);
 
-        //open the app when the widget is clicked on the name
-//        Intent openActivity = new Intent(context, MainActivity.class);
-//        PendingIntent pendingIntent =  PendingIntent.getActivity(context, 0, openActivity, 0);
-//        views.setOnClickPendingIntent(R.id.widget_container, pendingIntent);
 
 //        //start a service when the widget is clicked on the name
 //        Intent startService = new Intent(context, BackingServices.class);
@@ -69,8 +75,6 @@ public class FavoriteRecipeWidget extends AppWidgetProvider {
     @Override
     public void onEnabled(Context context) {
         // Enter relevant functionality for when the first widget is created
-        Timber.d("Widget Created");
-        BackingServices.updateWidgets(context);
     }
 
     @Override
@@ -78,26 +82,12 @@ public class FavoriteRecipeWidget extends AppWidgetProvider {
         // Enter relevant functionality for when the last widget is disabled
     }
 
-
-    @Override
-    public void onReceive(Context context, Intent intent) {
-//        final String action = intent.getAction();
-//        if (action.equals(AppWidgetManager.ACTION_APPWIDGET_UPDATE)) {
-//            // refresh all your widgets
-//            AppWidgetManager mgr = AppWidgetManager.getInstance(context);
-//            ComponentName cn = new ComponentName(context, FavoriteRecipeWidget.class);
-//            mgr.notifyAppWidgetViewDataChanged(mgr.getAppWidgetIds(cn), R.id.widget_grid_view);
-//        }
-//        super.onReceive(context, intent);
-    }
-
     @Override
     public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager,
                                           int appWidgetId, Bundle newOptions) {
-        BackingServices.updateWidgets(context);
         super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions);
+        BackingServices.updateWidgets(context);
+        Timber.d("Widget option changed");
     }
-
-
 }
 
