@@ -88,11 +88,6 @@ public class MainActivity extends AppCompatActivity implements ListAdapter.ItemO
                 clear();
                 for(int i = 0; i < data.length; i++){
                     mItems.add(data[i]);
-//                    RecipesData.Ingredients[] ingredients = data[i].getIngredients();
-//
-//                    for(int j = 0; j < ingredients.length; j++){
-//                        Timber.d(ingredients[j].getIngredient());
-//                    }
                 }
             }
         }, true);
