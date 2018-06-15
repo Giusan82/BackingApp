@@ -11,5 +11,4 @@
         android:title="@string/favorite_recipe"
         app:actionViewClass="android.support.v7.widget.SwitchCompat"
         app:showAsAction="always" />
-
 </menu>

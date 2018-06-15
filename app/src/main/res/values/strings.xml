@@ -9,6 +9,7 @@
     <string name="steps">%1$s</string>
     <string name="steps_with_index">%1$d.\t\t%2$s</string>
     <string name="servings">Servings: %1$d</string>
+    <string name="first_tab_name">Intro</string>
 
     <string name="ingredients_title">Ingredients List</string>
     <string name="steps_title">Steps List</string>
@@ -18,5 +19,4 @@
     <string name="empty_view_message">No ingredients found</string>
     <string name="favorite_recipe">Add me to favorite</string>
     <string name="widget_title">Select a favorite recipe</string>
-
 </resources>

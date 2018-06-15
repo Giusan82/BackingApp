@@ -41,7 +41,8 @@ import butterknife.ButterKnife;
 import timber.log.Timber;
 
 
-public class InstructionsFragment extends Fragment{
+public class InstructionsFragment extends Fragment {
+
     private static final String KEY_VIDEO_URL_STATE = "video_url";
     private static final String KEY_DESCRIPTION_STATE = "description";
     private static final String KEY_FULLSCREEN_STATE = "is_fullscreen";
@@ -66,13 +67,14 @@ public class InstructionsFragment extends Fragment{
     ImageButton mFullScreenExit;
 
 
-    public InstructionsFragment() {}
+    public InstructionsFragment() {
+    }
 
-    public void setPosition(int position){
+    public void setPosition(int position) {
         mPosition = position;
     }
 
-    public void setStepsList(RecipesData.Steps[] steps){
+    public void setStepsList(RecipesData.Steps[] steps) {
         mSteps = steps;
     }
 
@@ -83,8 +85,7 @@ public class InstructionsFragment extends Fragment{
 
         ButterKnife.bind(this, rootView);
 
-
-        if(savedInstanceState != null) {
+        if (savedInstanceState != null) {
             isFullScreen = savedInstanceState.getBoolean(KEY_FULLSCREEN_STATE);
             mVideoURL = savedInstanceState.getString(KEY_VIDEO_URL_STATE);
             mDescription = savedInstanceState.getString(KEY_DESCRIPTION_STATE);
@@ -93,8 +94,8 @@ public class InstructionsFragment extends Fragment{
             mExoPlayer.seekTo(savedInstanceState.getLong(KEY_POSITION_PLAYING_TRACK));
             mExoPlayer.setPlayWhenReady(savedInstanceState.getBoolean(KEY_PLAYING));
 
-        }else{
-            if(mSteps != null){
+        } else {
+            if (mSteps != null) {
                 mVideoURL = mSteps[mPosition].getVideoUrl();
                 mDescription = mSteps[mPosition].getStepDescription();
 
@@ -113,11 +114,11 @@ public class InstructionsFragment extends Fragment{
             @Override
             public void onClick(View v) {
                 final Activity activity = getActivity();
-                if (activity != null){
+                if (activity != null) {
                     isFullScreen = true;
-                    if(activity.getResources().getConfiguration().orientation == 2){
+                    if (activity.getResources().getConfiguration().orientation == 2) {
                         openFullScreenDialog();
-                    }else{
+                    } else {
                         activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
                     }
 
@@ -128,7 +129,7 @@ public class InstructionsFragment extends Fragment{
             @Override
             public void onClick(View v) {
                 Activity activity = getActivity();
-                if (activity != null){
+                if (activity != null) {
                     activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
 
                     ((ViewGroup) mPlayerView.getParent()).removeView(mPlayerView);
@@ -141,8 +142,8 @@ public class InstructionsFragment extends Fragment{
                 }
             }
         });
-        if(mExoPlayer != null)
-        mExoPlayer.addListener(playerListener);
+        if (mExoPlayer != null)
+            mExoPlayer.addListener(playerListener);
         return rootView;
     }
 
@@ -151,11 +152,10 @@ public class InstructionsFragment extends Fragment{
      */
     @Override
     public void onSaveInstanceState(Bundle currentState) {
-        Timber.d("onSaveInstanceState: " + mVideoURL);
         currentState.putString(KEY_VIDEO_URL_STATE, mVideoURL);
         currentState.putString(KEY_DESCRIPTION_STATE, mDescription);
         currentState.putBoolean(KEY_FULLSCREEN_STATE, isFullScreen);
-        if(mExoPlayer != null){
+        if (mExoPlayer != null) {
             currentState.putLong(KEY_POSITION_PLAYING_TRACK, mExoPlayer.getCurrentPosition());
         }
         currentState.putBoolean(KEY_PLAYING, isPlaying);
@@ -163,6 +163,7 @@ public class InstructionsFragment extends Fragment{
 
     /**
      * Initialize ExoPlayer.
+     *
      * @param mediaUri The URI of the sample to play.
      */
     private void initializePlayer(Uri mediaUri) {
@@ -182,12 +183,11 @@ public class InstructionsFragment extends Fragment{
         }
     }
 
-
     /**
      * Release ExoPlayer.
      */
     private void releasePlayer() {
-        if(mExoPlayer != null){
+        if (mExoPlayer != null) {
             mExoPlayer.stop();
             mExoPlayer.release();
             mExoPlayer = null;
@@ -208,11 +208,12 @@ public class InstructionsFragment extends Fragment{
     @Override
     public void onResume() {
         super.onResume();
-        if(isFullScreen){
+        if (isFullScreen) {
             openFullScreenDialog();
         }
     }
-    private void openFullScreenDialog(){
+
+    private void openFullScreenDialog() {
         mFullScreenDialog = new Dialog(getContext(), android.R.style.Theme_Black_NoTitleBar_Fullscreen);
         ((ViewGroup) mPlayerView.getParent()).removeView(mPlayerView);
         mFullScreenDialog.addContentView(mPlayerView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
@@ -223,13 +224,16 @@ public class InstructionsFragment extends Fragment{
 
     private Player.EventListener playerListener = new Player.EventListener() {
         @Override
-        public void onTimelineChanged(Timeline timeline, Object manifest) {}
+        public void onTimelineChanged(Timeline timeline, Object manifest) {
+        }
 
         @Override
-        public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {}
+        public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
+        }
 
         @Override
-        public void onLoadingChanged(boolean isLoading) {}
+        public void onLoadingChanged(boolean isLoading) {
+        }
 
         @Override
         public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
@@ -237,15 +241,19 @@ public class InstructionsFragment extends Fragment{
         }
 
         @Override
-        public void onRepeatModeChanged(int repeatMode) {}
+        public void onRepeatModeChanged(int repeatMode) {
+        }
 
         @Override
-        public void onPlayerError(ExoPlaybackException error) {}
+        public void onPlayerError(ExoPlaybackException error) {
+        }
 
         @Override
-        public void onPositionDiscontinuity() {}
+        public void onPositionDiscontinuity() {
+        }
 
         @Override
-        public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {}
+        public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
+        }
     };
 }

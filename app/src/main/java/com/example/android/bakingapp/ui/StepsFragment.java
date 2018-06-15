@@ -22,11 +22,11 @@ import butterknife.ButterKnife;
 import timber.log.Timber;
 
 
-public class StepsFragment extends Fragment implements ListAdapter.ItemOnClickHandler{
+public class StepsFragment extends Fragment implements ListAdapter.ItemOnClickHandler {
 
     //Constructor
-    public StepsFragment() {}
-
+    public StepsFragment() {
+    }
 
     @BindView(R.id.rv_list_steps)
     RecyclerView mListStep;
@@ -43,9 +43,7 @@ public class StepsFragment extends Fragment implements ListAdapter.ItemOnClickHa
 
         ButterKnife.bind(this, rootView);
 
-
         LinearLayoutManager layoutManagerSteps = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-
         mListStep.setLayoutManager(layoutManagerSteps);
         mListStep.setHasFixedSize(true);
 
@@ -54,49 +52,35 @@ public class StepsFragment extends Fragment implements ListAdapter.ItemOnClickHa
         mStepsAdapter = new ListAdapter(getContext(), mStepsList, this, false);
         mListStep.setAdapter(mStepsAdapter);
 
-
-
         Intent intent = getActivity().getIntent();
-        if(intent.hasExtra(RecipesData.EXTRA_STEPS)){
+        if (intent.hasExtra(RecipesData.EXTRA_STEPS)) {
 
             mSteps = (RecipesData.Steps[]) intent.getSerializableExtra(RecipesData.EXTRA_STEPS);
 
-            for(int i = 0; i < mSteps.length; i++){
+            for (int i = 0; i < mSteps.length; i++) {
                 mStepsList.add(mSteps[i]);
             }
         }
-
-
         return rootView;
     }
 
     @Override
     public void onClick(int position) {
-
-
-        if(getActivity().findViewById(R.id.instruction_fragment) != null){
-
+        if (getActivity().findViewById(R.id.instruction_fragment) != null) {
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-
             InstructionsFragment instructions = new InstructionsFragment();
-
             instructions.setPosition(position);
             instructions.setStepsList(mSteps);
-
             fragmentManager.beginTransaction().replace(R.id.instruction_fragment, instructions).commit();
-
-        }else{
+        } else {
             Timber.d("Position: " + position + " No have two pane");
             //this open the InstructionsActivity
             Intent intent = new Intent(getContext(), InstructionsActivity.class);
             intent.putExtra(RecipesData.EXTRA_STEPS_LIST, mSteps);
             intent.putExtra(RecipesData.EXTRA_STEPS_POSITION, position);
-
             if (intent.resolveActivity(getContext().getPackageManager()) != null) {
                 this.startActivity(intent);
             }
-
         }
-
     }
 }

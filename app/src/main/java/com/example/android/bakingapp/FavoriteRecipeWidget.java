@@ -3,7 +3,6 @@ package com.example.android.bakingapp;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,10 +11,8 @@ import android.widget.RemoteViews;
 import com.example.android.bakingapp.Services.BackingServices;
 import com.example.android.bakingapp.ui.MainActivity;
 import com.example.android.bakingapp.ui.StepsActivity;
-import com.example.android.bakingapp.utilities.GridWidgetService;
+import com.example.android.bakingapp.Services.GridWidgetService;
 import com.example.android.bakingapp.utilities.RecipesData;
-
-import timber.log.Timber;
 
 /**
  * Implementation of App Widget functionality.
@@ -29,27 +26,22 @@ public class FavoriteRecipeWidget extends AppWidgetProvider {
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.favorite_recipe_widget);
 
-        if(RecipesData.getRecipeName(context).equals("")){
+        if (RecipesData.getRecipeName(context).equals("")) {
             recipe_name = context.getString(R.string.widget_title);
-            //open the app when the widget is clicked on the name
+            //open the app when the widget is clicked on the name, when there are no recipe saved, open the MainActivity
             Intent openActivity = new Intent(context, MainActivity.class);
-            PendingIntent pendingIntent =  PendingIntent.getActivity(context, 0, openActivity, 0);
+            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, openActivity, 0);
             views.setOnClickPendingIntent(R.id.widget_container, pendingIntent);
-        }else{
-           recipe_name = RecipesData.getRecipeName(context);
+        } else {
+            recipe_name = RecipesData.getRecipeName(context);
         }
         views.setTextViewText(R.id.recipe_name, recipe_name);
 
-
-//        //start a service when the widget is clicked on the name
-//        Intent startService = new Intent(context, BackingServices.class);
-//        startService.setAction(BackingServices.ACTION_INGREDIENT_LIST);
-//        PendingIntent startServicePendingIntent = PendingIntent.getService(context, 0, startService, PendingIntent.FLAG_UPDATE_CURRENT);
-//        views.setOnClickPendingIntent(R.id.recipe_name, startServicePendingIntent);
-
+        //sets the remoteview adapter
         Intent listService = new Intent(context, GridWidgetService.class);
         views.setRemoteAdapter(R.id.widget_grid_view, listService);
 
+        //gets the intents and performs the action
         Intent appIntent = new Intent(context, StepsActivity.class);
         PendingIntent appPendingIntentTemplate = PendingIntent.getActivity(context, 0, appIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         views.setPendingIntentTemplate(R.id.widget_grid_view, appPendingIntentTemplate);
@@ -86,8 +78,9 @@ public class FavoriteRecipeWidget extends AppWidgetProvider {
     public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager,
                                           int appWidgetId, Bundle newOptions) {
         super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions);
+
+        //update the widget when its configuration changes
         BackingServices.updateWidgets(context);
-        Timber.d("Widget option changed");
     }
 }
 

@@ -1,23 +1,16 @@
 package com.example.android.bakingapp.utilities;
 
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
 import com.example.android.bakingapp.R;
-import com.example.android.bakingapp.ui.MainActivity;
-import com.example.android.bakingapp.ui.StepsActivity;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
-import timber.log.Timber;
-
-public class GridWidgedAdapter implements RemoteViewsService.RemoteViewsFactory{
+public class GridWidgedAdapter implements RemoteViewsService.RemoteViewsFactory {
 
     private Context mContext;
     private ArrayList mItems = new ArrayList();
@@ -26,11 +19,10 @@ public class GridWidgedAdapter implements RemoteViewsService.RemoteViewsFactory{
     private RecipesData.Ingredients[] mIngredients;
     private int mPosition;
 
-
-
-    public GridWidgedAdapter(Context context){
+    public GridWidgedAdapter(Context context) {
         this.mContext = context;
     }
+
     @Override
     public void onCreate() {
 
@@ -38,35 +30,22 @@ public class GridWidgedAdapter implements RemoteViewsService.RemoteViewsFactory{
 
     @Override
     public void onDataSetChanged() {
-        fetchingData();
-    }
-
-    private void fetchingData(){
         mPosition = RecipesData.getPosition(mContext);
 
-        if(mPosition != RecipesData.PREF_KEY_DEFAULT_POSITION){
+        //parses data from saved json string when a update is triggered
+        if (mPosition != RecipesData.PREF_KEY_DEFAULT_POSITION) {
             String result = RecipesData.getJsonResponse(mContext);
             Gson gson = new Gson();
             mRecipes = gson.fromJson(result, RecipesData[].class);
             mSteps = mRecipes[mPosition].getSteps();
             mIngredients = mRecipes[mPosition].getIngredients();
 
-            clear();
-//                for(int i = 0; i < data.length; i++){
-//                    mItems.add(data[i]);
-//
-//                }
+            this.mItems.clear();
 
-            for(int i = 0; i < mIngredients.length; i++){
+            for (int i = 0; i < mIngredients.length; i++) {
                 mItems.add(mIngredients[i]);
             }
         }
-
-    }
-
-    private void clear() {
-        //clear the arraylist
-        this.mItems.clear();
     }
 
     @Override
@@ -76,24 +55,23 @@ public class GridWidgedAdapter implements RemoteViewsService.RemoteViewsFactory{
 
     @Override
     public int getCount() {
-        if(mItems == null) return 0;
+        if (mItems == null) return 0;
         return mItems.size();
     }
 
     @Override
     public RemoteViews getViewAt(int position) {
-        if(position < mIngredients.length){
+        if (position < mIngredients.length) {
             RecipesData.Ingredients current = (RecipesData.Ingredients) mItems.get(position);
-            Log.d("getViewAt", current.getIngredient());
             RemoteViews views = new RemoteViews(mContext.getPackageName(), R.layout.widget_list_layout);
-            views.setTextViewText(R.id.tw_list_recipe_name, mContext.getString(R.string.ingredients, position+1, current.getQuantity(), current.getMeasure(), current.getIngredient()));
+            views.setTextViewText(R.id.tw_list_recipe_name, mContext.getString(R.string.ingredients, position + 1, current.getQuantity(), current.getMeasure(), current.getIngredient()));
             Intent openSteps = new Intent();
             openSteps.putExtra(RecipesData.EXTRA_STEPS, mSteps);
             openSteps.putExtra(RecipesData.EXTRA_INGREDIENTS, mIngredients);
             openSteps.putExtra(RecipesData.EXTRA_RECIPE_NAME, mRecipes[mPosition].getName());
             views.setOnClickFillInIntent(R.id.tw_list_recipe_name, openSteps);
             return views;
-        }else{
+        } else {
             return null;
         }
 
@@ -106,7 +84,7 @@ public class GridWidgedAdapter implements RemoteViewsService.RemoteViewsFactory{
 
     @Override
     public int getViewTypeCount() {
-        return 1;
+        return 1; // Treat all items in the ListView the same
     }
 
     @Override

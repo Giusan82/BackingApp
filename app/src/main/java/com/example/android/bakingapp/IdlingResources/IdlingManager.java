@@ -13,7 +13,6 @@ public class IdlingManager implements IdlingResource {
     // Idleness is controlled with this boolean.
     private AtomicBoolean mIsIdleNow = new AtomicBoolean(true);
 
-
     @Override
     public String getName() {
         return this.getClass().getName();

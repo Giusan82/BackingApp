@@ -3,7 +3,6 @@ package com.example.android.bakingapp.utilities;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,39 +16,36 @@ import java.util.ArrayList;
 
 
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder> {
-    private static final String LOG_TAG = ListAdapter.class.getSimpleName();
 
     private Context mContext;
     private ArrayList mItems;
     private boolean isSteps;
     private boolean hasIngredients;
 
-
     public final ListAdapter.ItemOnClickHandler mCallback;
 
-    public interface ItemOnClickHandler{
+    public interface ItemOnClickHandler {
         void onClick(int position);
     }
 
     /**
      * Constructor
      */
-    public ListAdapter(Context context, ArrayList items, ItemOnClickHandler onClickHandler,  boolean has_ingredients) {
+    public ListAdapter(Context context, ArrayList items, ItemOnClickHandler onClickHandler, boolean has_ingredients) {
         this.mContext = context;
         this.mItems = items;
         this.hasIngredients = has_ingredients;
         this.mCallback = onClickHandler;
     }
 
-
     @Override
     public ListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Activity activity = (Activity) mContext;
         int layoutId;
-        if(activity.getClass().getName().equals(StepsActivity.class.getName())){
+        if (activity.getClass().getName().equals(StepsActivity.class.getName())) {
             layoutId = R.layout.list;
             isSteps = true;
-        }else{
+        } else {
             layoutId = R.layout.grid;
             isSteps = false;
         }
@@ -60,24 +56,24 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder
 
     @Override
     public void onBindViewHolder(final ListViewHolder holder, int position) {
-        if(isSteps){
-            if(hasIngredients){
+        if (isSteps) {
+            if (hasIngredients) {
                 final RecipesData.Ingredients current = (RecipesData.Ingredients) mItems.get(position);
-                String ingredient = mContext.getString(R.string.ingredients, position+1, current.getQuantity(), current.getMeasure(), current.getIngredient());
+                String ingredient = mContext.getString(R.string.ingredients, position + 1, current.getQuantity(), current.getMeasure(), current.getIngredient());
                 holder.tv_name.setText(ingredient);
                 holder.setIsRecyclable(false);
-            }else{
+            } else {
                 final RecipesData.Steps current = (RecipesData.Steps) mItems.get(position);
                 String step;
-                if(position != 0){
+                if (position != 0) {
                     step = mContext.getString(R.string.steps_with_index, position, current.getShortDescription());
-                }else{
+                } else {
                     step = mContext.getString(R.string.steps, current.getShortDescription());
                 }
                 holder.tv_name.setText(step);
                 holder.setIsRecyclable(false);
             }
-        }else{
+        } else {
             final RecipesData current = (RecipesData) mItems.get(position);
             holder.tv_name.setText(current.getName());
             holder.tv_servings.setText(mContext.getString(R.string.servings, current.getServings()));

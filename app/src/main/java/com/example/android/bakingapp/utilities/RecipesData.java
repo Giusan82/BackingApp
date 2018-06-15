@@ -1,16 +1,17 @@
 package com.example.android.bakingapp.utilities;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.DisplayMetrics;
 
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
 // source for implementing Serializable: https://stackoverflow.com/a/2736612
-public class RecipesData implements Serializable{
-    public static final String LOG_TAG = RecipesData.class.getName();
+public class RecipesData implements Serializable {
 
     private static final String KEY_ID = "id";
     private static final String KEY_NAME = "name";
@@ -54,17 +55,31 @@ public class RecipesData implements Serializable{
     @SerializedName(KEY_STEPS)
     private Steps[] mSteps;
 
-    public RecipesData(){}
+    public RecipesData() {
+    }
 
-    public int getID(){return mID;}
-    public String getName(){return mName;}
-    public int getServings(){return mServings;}
+    public int getID() {
+        return mID;
+    }
 
-    public Ingredients[] getIngredients(){return mIngredients;}
-    public Steps[] getSteps(){return mSteps;}
+    public String getName() {
+        return mName;
+    }
+
+    public int getServings() {
+        return mServings;
+    }
+
+    public Ingredients[] getIngredients() {
+        return mIngredients;
+    }
+
+    public Steps[] getSteps() {
+        return mSteps;
+    }
 
 
-    public class Ingredients implements Serializable{
+    public class Ingredients implements Serializable {
 
         @SerializedName(KEY_INGREDIENT)
         private String mIngredient;
@@ -73,12 +88,20 @@ public class RecipesData implements Serializable{
         @SerializedName(KEY_MEASURE)
         private String mMeasure;
 
-        public String getIngredient(){return mIngredient;}
-        public float getQuantity(){return mQuantity;}
-        public String getMeasure(){return mMeasure;}
+        public String getIngredient() {
+            return mIngredient;
+        }
+
+        public float getQuantity() {
+            return mQuantity;
+        }
+
+        public String getMeasure() {
+            return mMeasure;
+        }
     }
 
-    public class Steps implements Serializable{
+    public class Steps implements Serializable {
 
         @SerializedName(KEY_STEPS_ID)
         private int mStepID;
@@ -91,11 +114,25 @@ public class RecipesData implements Serializable{
         @SerializedName(KEY_THUMBNAIL_URl)
         private String mImageUrl;
 
-        public int getStepID(){return mStepID;}
-        public String getShortDescription(){return mShortDescription;}
-        public String getStepDescription(){return mDescription;}
-        public String getVideoUrl(){return mVideoUrl;}
-        public String getImageUrl(){return mImageUrl;}
+        public int getStepID() {
+            return mStepID;
+        }
+
+        public String getShortDescription() {
+            return mShortDescription;
+        }
+
+        public String getStepDescription() {
+            return mDescription;
+        }
+
+        public String getVideoUrl() {
+            return mVideoUrl;
+        }
+
+        public String getImageUrl() {
+            return mImageUrl;
+        }
     }
 
     public static void setPosition(Context context, int position) {
@@ -104,6 +141,7 @@ public class RecipesData implements Serializable{
         editor.putInt(PREF_KEY_RECIPE_POSITION, position);
         editor.apply();
     }
+
     public static int getPosition(Context context) {
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         int position = sharedPrefs.getInt(PREF_KEY_RECIPE_POSITION, PREF_KEY_DEFAULT_POSITION);
@@ -134,5 +172,17 @@ public class RecipesData implements Serializable{
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context);
         String jsonResponse = sharedPrefs.getString(PREF_KEY_JSON_RESPONSE, "");
         return jsonResponse;
+    }
+
+    //source:  Udacity reviewer
+    public static int numberOfColumns(Activity activity) {
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        activity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        // You can change this divider to adjust the size of the poster
+        int widthDivider = 600;
+        int width = displayMetrics.widthPixels;
+        int nColumns = width / widthDivider;
+        if (nColumns < 2) return 1; //to keep the grid aspect
+        return nColumns;
     }
 }

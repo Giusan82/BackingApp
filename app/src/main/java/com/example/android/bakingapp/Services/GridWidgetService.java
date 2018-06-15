@@ -1,7 +1,9 @@
-package com.example.android.bakingapp.utilities;
+package com.example.android.bakingapp.Services;
 
 import android.content.Intent;
 import android.widget.RemoteViewsService;
+
+import com.example.android.bakingapp.utilities.GridWidgedAdapter;
 
 public class GridWidgetService extends RemoteViewsService {
 

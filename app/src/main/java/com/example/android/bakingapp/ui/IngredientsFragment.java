@@ -33,7 +33,6 @@ public class IngredientsFragment extends Fragment implements ListAdapter.ItemOnC
         // Required empty public constructor
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
