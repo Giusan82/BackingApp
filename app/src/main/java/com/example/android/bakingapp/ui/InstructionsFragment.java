@@ -66,7 +66,6 @@ public class InstructionsFragment extends Fragment {
     @BindView(R.id.exo_fullscreen_exit)
     ImageButton mFullScreenExit;
 
-
     public InstructionsFragment() {
     }
 
@@ -90,9 +89,11 @@ public class InstructionsFragment extends Fragment {
             mVideoURL = savedInstanceState.getString(KEY_VIDEO_URL_STATE);
             mDescription = savedInstanceState.getString(KEY_DESCRIPTION_STATE);
             mInstructions.setText(mDescription);
-            initializePlayer(Uri.parse(mVideoURL));
-            mExoPlayer.seekTo(savedInstanceState.getLong(KEY_POSITION_PLAYING_TRACK));
-            mExoPlayer.setPlayWhenReady(savedInstanceState.getBoolean(KEY_PLAYING));
+            if (mVideoURL != null) {
+                initializePlayer(Uri.parse(mVideoURL));
+                mExoPlayer.seekTo(savedInstanceState.getLong(KEY_POSITION_PLAYING_TRACK));
+                mExoPlayer.setPlayWhenReady(savedInstanceState.getBoolean(KEY_PLAYING));
+            }
 
         } else {
             if (mSteps != null) {
@@ -105,11 +106,12 @@ public class InstructionsFragment extends Fragment {
 
                 // Initialize the player.
                 Timber.d("Position: " + mPosition);
-                initializePlayer(Uri.parse(mVideoURL));
-                mExoPlayer.setPlayWhenReady(true);
+                if (mVideoURL != null) {
+                    initializePlayer(Uri.parse(mVideoURL));
+                    mExoPlayer.setPlayWhenReady(true);
+                }
             }
         }
-
         mFullScrean.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -121,7 +123,6 @@ public class InstructionsFragment extends Fragment {
                     } else {
                         activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
                     }
-
                 }
             }
         });
@@ -198,7 +199,6 @@ public class InstructionsFragment extends Fragment {
     /**
      * Release the player when the activity is destroyed.
      */
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
