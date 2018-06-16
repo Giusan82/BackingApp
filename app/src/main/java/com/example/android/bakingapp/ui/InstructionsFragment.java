@@ -12,8 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.android.bakingapp.R;
 import com.example.android.bakingapp.utilities.RecipesData;
 import com.google.android.exoplayer2.DefaultLoadControl;
@@ -49,6 +51,7 @@ public class InstructionsFragment extends Fragment {
     private static final String KEY_POSITION_PLAYING_TRACK = "current_video_position";
     private static final String KEY_PLAYING = "is_playing";
     private String mVideoURL;
+    private String mImageUrl;
     private String mDescription;
     private RecipesData.Steps[] mSteps;
     private int mPosition;
@@ -65,6 +68,8 @@ public class InstructionsFragment extends Fragment {
     ImageButton mFullScrean;
     @BindView(R.id.exo_fullscreen_exit)
     ImageButton mFullScreenExit;
+    @BindView(R.id.iv_thumbnail_url)
+    ImageView mIvImage;
 
     public InstructionsFragment() {
     }
@@ -99,7 +104,12 @@ public class InstructionsFragment extends Fragment {
             if (mSteps != null) {
                 mVideoURL = mSteps[mPosition].getVideoUrl();
                 mDescription = mSteps[mPosition].getStepDescription();
-
+                mImageUrl = mSteps[mPosition].getImageUrl();
+                if (mImageUrl.endsWith(".png") || mImageUrl.endsWith(".jpg")) {
+                    Glide.with(this).load(mImageUrl).crossFade().dontTransform().into(mIvImage);
+                } else {
+                    Timber.d("No image resource found");
+                }
                 //this add a preview image
                 mPlayerView.setDefaultArtwork(BitmapFactory.decodeResource(getResources(), R.drawable.no_video_placeholder));
                 mInstructions.setText(mDescription);
@@ -196,13 +206,11 @@ public class InstructionsFragment extends Fragment {
         }
     }
 
-    /**
-     * Release the player when the activity is destroyed.
-     */
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    public void onStop() {
+        super.onStop();
         releasePlayer();
+        Timber.d("Exoplayer released");
     }
 
     @Override

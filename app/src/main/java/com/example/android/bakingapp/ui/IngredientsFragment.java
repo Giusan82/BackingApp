@@ -20,7 +20,7 @@ import butterknife.ButterKnife;
 import timber.log.Timber;
 
 
-public class IngredientsFragment extends Fragment implements ListAdapter.ItemOnClickHandler{
+public class IngredientsFragment extends Fragment implements ListAdapter.ItemOnClickHandler {
 
     @BindView(R.id.rv_list_ingredients)
     RecyclerView mListIngredients;
@@ -46,14 +46,14 @@ public class IngredientsFragment extends Fragment implements ListAdapter.ItemOnC
         mListIngredients.setHasFixedSize(true);
 
         mIngredients = new ArrayList<>();
-        mIngredientsAdapter = new ListAdapter(getContext(), mIngredients,this, true);
+        mIngredientsAdapter = new ListAdapter(getContext(), mIngredients, this, true);
         mListIngredients.setAdapter(mIngredientsAdapter);
 
         Intent intent = getActivity().getIntent();
-        if(intent.hasExtra(RecipesData.EXTRA_INGREDIENTS)){
+        if (intent.hasExtra(RecipesData.EXTRA_INGREDIENTS)) {
             RecipesData.Ingredients[] ingredients = (RecipesData.Ingredients[]) intent.getSerializableExtra(RecipesData.EXTRA_INGREDIENTS);
 
-            for(int i = 0; i < ingredients.length; i++){
+            for (int i = 0; i < ingredients.length; i++) {
                 mIngredients.add(ingredients[i]);
             }
         }

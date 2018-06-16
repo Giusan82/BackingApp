@@ -19,13 +19,13 @@ public class StepsActivity extends AppCompatActivity {
     private RecipesData.Steps[] mSteps;
     private int mRecipePosition;
     private String mRecipeName;
+    private boolean isTablet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_steps);
-
-
+        isTablet = getResources().getBoolean(R.bool.isTablet);
         Intent intent = getIntent();
         if (intent.hasExtra(RecipesData.EXTRA_RECIPE_NAME)) {
             mRecipeName = intent.getStringExtra(RecipesData.EXTRA_RECIPE_NAME);
@@ -41,13 +41,15 @@ public class StepsActivity extends AppCompatActivity {
         }
 
         if (savedInstanceState == null) {
-            if (findViewById(R.id.instruction_fragment) != null) {
-                int position = 0;
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                InstructionsFragment instructions = new InstructionsFragment();
-                instructions.setPosition(position);
-                instructions.setStepsList(mSteps);
-                fragmentManager.beginTransaction().add(R.id.instruction_fragment, instructions).commit();
+            if (isTablet) {
+                if (findViewById(R.id.instruction_fragment) != null) {
+                    int position = 0;
+                    FragmentManager fragmentManager = getSupportFragmentManager();
+                    InstructionsFragment instructions = new InstructionsFragment();
+                    instructions.setPosition(position);
+                    instructions.setStepsList(mSteps);
+                    fragmentManager.beginTransaction().add(R.id.instruction_fragment, instructions).commit();
+                }
             }
         }
     }

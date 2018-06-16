@@ -50,7 +50,7 @@ public class InstructionsActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             tabLayout.setElevation(3);
         }
-        if(savedInstanceState == null){
+        if (savedInstanceState == null) {
             tabLayout.setSmoothScrollingEnabled(true);
             tabLayout.setScrollPosition(mPosition, 0, true);
 
@@ -62,7 +62,7 @@ public class InstructionsActivity extends AppCompatActivity {
                             tabLayout.getTabAt(mPosition).select();
                         }
                     }, DELAY_MILLIS);
-        }else{
+        } else {
             final int position = savedInstanceState.getInt(KEY_POSITION_STATE);
             tabLayout.setSmoothScrollingEnabled(true);
             tabLayout.setScrollPosition(position, 0, true);
