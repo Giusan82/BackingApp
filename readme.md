@@ -42,19 +42,3 @@ App that will allow a user to select a recipe and see video-guided steps for how
 * Application sensibly utilizes a third-party library to enhance the app's features. That could be helper library to interface with ContentProviders if you choose to store the recipes, a UI binding library to avoid writing findViewById a bunch of times, or something similar.
 * Application has a companion homescreen widget.
 * Widget displays ingredient list for desired recipe.
-
-# Screenshots
-
-## Phone
-<div align="center">
-<img src="screenshots/screenshot-2018-07-10_16.19.04.302.png" height="450" style="max-width:100%;">
-<img src="screenshots/screenshot-2018-07-10_17.58.49.500.png" height="450" style="max-width:100%;">
-<img src="screenshots/screenshot-2018-07-10_17.59.07.483.png" height="450" style="max-width:100%;">
-</div>
-
-## Tablet
-<div align="center">
-<img src="screenshots/screenshot-2018-07-10_18.02.51.110.png" height="450" style="max-width:100%;">
-<img src="screenshots/screenshot-2018-07-10_18.03.11.251.png" height="450" style="max-width:100%;">
-<img src="screenshots/screenshot-2018-07-10_18.03.28.211.png" height="450" style="max-width:100%;">
-</div>
